@@ -10,6 +10,7 @@
 1. [Auth API](#auth-api)
 2. [Apartments API](#apartments-api)
 3. [Users API](#users-api)
+4. [Notification API](#notification-api)
 
 ### 미들웨어
 
@@ -57,6 +58,21 @@
 | HTTP Method | Endpoint | Access Role | Middleware                 | Description                     |
 | ----------- | -------- | ----------- | -------------------------- | ------------------------------- |
 | PATCH       | `/me`    | USER        | `singleFileUpload('file')` | 내 정보 수정 (비밀번호, 이미지) |
+
+### Notification API
+
+```typescript
+import { Router } from 'express';
+import { allow, AllowedRole } from '../middlewares/allow.middleware';
+import { handleGetNotifications, handleReadNotification } from './notifications.controller';
+
+const notifications = Router();
+
+notifications.get('/sse', allow(AllowedRole.USER), handleGetNotifications);
+notifications.patch('/:id/read', allow(AllowedRole.USER), handleReadNotification);
+
+export default notifications;
+```
 
 ## 미들웨어
 
